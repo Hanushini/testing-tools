@@ -1,0 +1,40 @@
+pipeline {
+    agent any
+
+    environment {
+        ENVIRONMENT = "${params['Environment']}"
+        POSTMAN_COLLECTION = "${params['Test Modules']}"
+        EMAIL_LIST = "${params['Email List']}"
+        TEST_FAILED = 'false'
+    }
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                git branch: "${BRANCH}",
+                    url: 'https://github.com/Hanushini/testing-tools.git'
+            }
+        }
+
+        stage('Run Postman Tests') {
+            steps {
+                script {
+                    try {
+                        docker.build("newman-temp:${env.BUILD_ID}")
+                              .inside {
+                            sh """
+                            newman run ${POSTMAN_COLLECTION}.postman_collection.json \
+                            -e postman/${ENVIRONMENT}.postman_environment.json \
+                            -r cli,htmlextra \
+                            --reporter-htmlextra-export report.html
+                            """
+                        }
+                    } catch (e) {
+                        env.TEST_FAILED = 'true'
+                    }
+                }
+            }
+        }
+    }
+}

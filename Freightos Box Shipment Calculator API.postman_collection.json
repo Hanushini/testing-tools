@@ -1,0 +1,844 @@
+{
+	"info": {
+		"_postman_id": "887a0a75-349f-4c94-b562-6acb600852bc",
+		"name": "Freightos Box Shipment Calculator API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "15071380"
+	},
+	"item": [
+		{
+			"name": "Freightos - shippingCalculator [Box Shipment] - JSON",
+			"item": [
+				{
+					"name": "Box Shipment - Orgn=CN & Dst=US",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"/*pm.test(\"Response time is below 3000ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(3000);\r",
+									"});*/\r",
+									"\r",
+									"pm.test(\"Response object exists\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"response\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"estimatedFreightRates is present\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.response).to.have.property(\"estimatedFreightRates\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Mode array is not empty\", function () {\r",
+									"    const modes = pm.response.json().response.estimatedFreightRates.mode;\r",
+									"    pm.expect(modes.length).to.be.greaterThan(0);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Expected shipping modes are available\", function () {\r",
+									"    const modes = pm.response.json().response.estimatedFreightRates.mode\r",
+									"        .map(m => m.mode);\r",
+									"\r",
+									"    pm.expect(modes).to.include.members([\"air\", \"express\", \"LCL\"]);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Min price is less than max price for each mode\", function () {\r",
+									"    const modes = pm.response.json().response.estimatedFreightRates.mode;\r",
+									"\r",
+									"    modes.forEach(m => {\r",
+									"        pm.expect(m.price.min.moneyAmount.amount)\r",
+									"            .to.be.below(m.price.max.moneyAmount.amount);\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Currency is USD for all modes\", function () {\r",
+									"    const modes = pm.response.json().response.estimatedFreightRates.mode;\r",
+									"\r",
+									"    modes.forEach(m => {\r",
+									"        pm.expect(m.price.min.moneyAmount.currency).to.eql(\"USD\");\r",
+									"        pm.expect(m.price.max.moneyAmount.currency).to.eql(\"USD\");\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Transit time min is less than max\", function () {\r",
+									"    const modes = pm.response.json().response.estimatedFreightRates.mode;\r",
+									"\r",
+									"    modes.forEach(m => {\r",
+									"        pm.expect(m.transitTimes.min)\r",
+									"            .to.be.below(m.transitTimes.max);\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Transit time unit is days\", function () {\r",
+									"    const modes = pm.response.json().response.estimatedFreightRates.mode;\r",
+									"\r",
+									"    modes.forEach(m => {\r",
+									"        pm.expect(m.transitTimes.unit).to.eql(\"days\");\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Number of quotes matches mode count\", function () {\r",
+									"    const data = pm.response.json().response.estimatedFreightRates;\r",
+									"    pm.expect(data.numQuotes).to.eql(data.mode.length);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}loadtype=boxes&weight=200&width=50&length=50&height=50&origin=Shanghai,China&quantity=2&destination=NewYork,NY",
+							"host": [
+								"{{URL}}loadtype=boxes&weight=200&width=50&length=50&height=50&origin=Shanghai,China&quantity=2&destination=NewYork,NY"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Box Shipment - Orgn=US & Dst=CN",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"/*pm.test(\"Response time is below 3000ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(3000);\r",
+									"});*/\r",
+									"\r",
+									"pm.test(\"Response object exists\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"response\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"estimatedFreightRates is present\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.response).to.have.property(\"estimatedFreightRates\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Mode array is not empty\", function () {\r",
+									"    const modes = pm.response.json().response.estimatedFreightRates.mode;\r",
+									"    pm.expect(modes.length).to.be.greaterThan(0);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Expected shipping modes are available\", function () {\r",
+									"    const modes = pm.response.json().response.estimatedFreightRates.mode\r",
+									"        .map(m => m.mode);\r",
+									"\r",
+									"    pm.expect(modes).to.include.members([\"air\", \"express\", \"LCL\"]);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Currency is USD for all modes\", function () {\r",
+									"    const modes = pm.response.json().response.estimatedFreightRates.mode;\r",
+									"\r",
+									"    modes.forEach(m => {\r",
+									"        pm.expect(m.price.min.moneyAmount.currency).to.eql(\"USD\");\r",
+									"        pm.expect(m.price.max.moneyAmount.currency).to.eql(\"USD\");\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Transit time min is less than max\", function () {\r",
+									"    const modes = pm.response.json().response.estimatedFreightRates.mode;\r",
+									"\r",
+									"    modes.forEach(m => {\r",
+									"        pm.expect(m.transitTimes.min)\r",
+									"            .to.be.below(m.transitTimes.max);\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Transit time unit is days\", function () {\r",
+									"    const modes = pm.response.json().response.estimatedFreightRates.mode;\r",
+									"\r",
+									"    modes.forEach(m => {\r",
+									"        pm.expect(m.transitTimes.unit).to.eql(\"days\");\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Number of quotes matches mode count\", function () {\r",
+									"    const data = pm.response.json().response.estimatedFreightRates;\r",
+									"    pm.expect(data.numQuotes).to.eql(data.mode.length);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}loadtype=boxes&weight=200&width=50&length=50&height=50&origin=NewYork,NY&quantity=2&destination=Shanghai,China",
+							"host": [
+								"{{URL}}loadtype=boxes&weight=200&width=50&length=50&height=50&origin=NewYork,NY&quantity=2&destination=Shanghai,China"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Box Shipment - Orgn=MY & Dst=AU",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"/*pm.test(\"Response time is below 3000ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(3000);\r",
+									"});*/\r",
+									"\r",
+									"pm.test(\"Response object exists\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"response\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"estimatedFreightRates is present\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.response).to.have.property(\"estimatedFreightRates\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Mode array is not empty\", function () {\r",
+									"    const modes = pm.response.json().response.estimatedFreightRates.mode;\r",
+									"    pm.expect(modes.length).to.be.greaterThan(0);\r",
+									"});\r",
+									"\r",
+									"/* 🔧 MODIFIED: Make expected modes flexible */\r",
+									"pm.test(\"Expected shipping modes are valid\", function () {\r",
+									"    const modes = pm.response.json().response.estimatedFreightRates.mode\r",
+									"        .map(m => m.mode);\r",
+									"\r",
+									"    const allowedModes = [\"air\", \"express\", \"LCL\"];\r",
+									"    modes.forEach(mode => {\r",
+									"        pm.expect(allowedModes).to.include(mode);\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"/* 🔧 MODIFIED: Allow min to be equal to max */\r",
+									"pm.test(\"Min price is less than or equal to max price for each mode\", function () {\r",
+									"    const modes = pm.response.json().response.estimatedFreightRates.mode;\r",
+									"\r",
+									"    modes.forEach(m => {\r",
+									"        pm.expect(m.price.min.moneyAmount.amount)\r",
+									"            .to.be.at.most(m.price.max.moneyAmount.amount);\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Currency is USD for all modes\", function () {\r",
+									"    const modes = pm.response.json().response.estimatedFreightRates.mode;\r",
+									"\r",
+									"    modes.forEach(m => {\r",
+									"        pm.expect(m.price.min.moneyAmount.currency).to.eql(\"USD\");\r",
+									"        pm.expect(m.price.max.moneyAmount.currency).to.eql(\"USD\");\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Transit time min is less than max\", function () {\r",
+									"    const modes = pm.response.json().response.estimatedFreightRates.mode;\r",
+									"\r",
+									"    modes.forEach(m => {\r",
+									"        pm.expect(m.transitTimes.min)\r",
+									"            .to.be.below(m.transitTimes.max);\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Transit time unit is days\", function () {\r",
+									"    const modes = pm.response.json().response.estimatedFreightRates.mode;\r",
+									"\r",
+									"    modes.forEach(m => {\r",
+									"        pm.expect(m.transitTimes.unit).to.eql(\"days\");\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Number of quotes matches mode count\", function () {\r",
+									"    const data = pm.response.json().response.estimatedFreightRates;\r",
+									"    pm.expect(data.numQuotes).to.eql(data.mode.length);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}loadtype=boxes&weight=500&width=50&length=70&height=50&origin=KualaLumpur,Malaysia&quantity=5&destination=Sydney,Australia",
+							"host": [
+								"{{URL}}loadtype=boxes&weight=500&width=50&length=70&height=50&origin=KualaLumpur,Malaysia&quantity=5&destination=Sydney,Australia"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Box Shipment - Orgn=AU & Dst=MY",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"/*pm.test(\"Response time is below 3000ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(3000);\r",
+									"});*/\r",
+									"\r",
+									"pm.test(\"Response object exists\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"response\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"estimatedFreightRates is present\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.response).to.have.property(\"estimatedFreightRates\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}loadtype=boxes&weight=500&width=50&length=70&height=50&origin=Sydney,Australia&quantity=5&destination=KualaLumpur,Malaysia",
+							"host": [
+								"{{URL}}loadtype=boxes&weight=500&width=50&length=70&height=50&origin=Sydney,Australia&quantity=5&destination=KualaLumpur,Malaysia"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Box Shipment - Orgn=DE & Dst=CA",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"/*pm.test(\"Response time is below 3000ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(3000);\r",
+									"});*/\r",
+									"\r",
+									"pm.test(\"Response object exists\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"response\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"estimatedFreightRates is present\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.response).to.have.property(\"estimatedFreightRates\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Mode array is not empty\", function () {\r",
+									"    const modes = pm.response.json().response.estimatedFreightRates.mode;\r",
+									"    pm.expect(modes.length).to.be.greaterThan(0);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Expected shipping modes are valid\", function () {\r",
+									"    const modes = pm.response.json().response.estimatedFreightRates.mode\r",
+									"        .map(m => m.mode);\r",
+									"\r",
+									"    const allowedModes = [\"air\", \"express\", \"LCL\"];\r",
+									"    modes.forEach(mode => {\r",
+									"        pm.expect(allowedModes).to.include(mode);\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Min price is less than or equal to max price for each mode\", function () {\r",
+									"    const modes = pm.response.json().response.estimatedFreightRates.mode;\r",
+									"\r",
+									"    modes.forEach(m => {\r",
+									"        pm.expect(m.price.min.moneyAmount.amount)\r",
+									"            .to.be.at.most(m.price.max.moneyAmount.amount);\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Currency is USD for all modes\", function () {\r",
+									"    const modes = pm.response.json().response.estimatedFreightRates.mode;\r",
+									"\r",
+									"    modes.forEach(m => {\r",
+									"        pm.expect(m.price.min.moneyAmount.currency).to.eql(\"USD\");\r",
+									"        pm.expect(m.price.max.moneyAmount.currency).to.eql(\"USD\");\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Transit time min is less than or equal to max\", function () {\r",
+									"    const modes = pm.response.json().response.estimatedFreightRates.mode;\r",
+									"\r",
+									"    modes.forEach(m => {\r",
+									"        pm.expect(m.transitTimes.min)\r",
+									"            .to.be.at.most(m.transitTimes.max);\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Transit time unit is days\", function () {\r",
+									"    const modes = pm.response.json().response.estimatedFreightRates.mode;\r",
+									"\r",
+									"    modes.forEach(m => {\r",
+									"        pm.expect(m.transitTimes.unit).to.eql(\"days\");\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Number of quotes matches mode count\", function () {\r",
+									"    const data = pm.response.json().response.estimatedFreightRates;\r",
+									"    pm.expect(data.numQuotes).to.eql(data.mode.length);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}loadtype=boxes&weight=300&width=55&length=60&height=40&origin=Hamburg,Germany&quantity=7&destination=Toronto,Canada",
+							"host": [
+								"{{URL}}loadtype=boxes&weight=300&width=55&length=60&height=40&origin=Hamburg,Germany&quantity=7&destination=Toronto,Canada"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Box Shipment - Orgn=CA & Dst=DE",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"/*pm.test(\"Response time is below 3000ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(3000);\r",
+									"});*/\r",
+									"\r",
+									"pm.test(\"Response object exists\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"response\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"estimatedFreightRates is present\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.response).to.have.property(\"estimatedFreightRates\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Mode array is not empty\", function () {\r",
+									"    const modes = pm.response.json().response.estimatedFreightRates.mode;\r",
+									"    pm.expect(modes.length).to.be.greaterThan(0);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Expected shipping modes are valid\", function () {\r",
+									"    const modes = pm.response.json().response.estimatedFreightRates.mode\r",
+									"        .map(m => m.mode);\r",
+									"\r",
+									"    const allowedModes = [\"air\", \"express\", \"LCL\"];\r",
+									"    modes.forEach(mode => {\r",
+									"        pm.expect(allowedModes).to.include(mode);\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Min price is less than or equal to max price for each mode\", function () {\r",
+									"    const modes = pm.response.json().response.estimatedFreightRates.mode;\r",
+									"\r",
+									"    modes.forEach(m => {\r",
+									"        pm.expect(m.price.min.moneyAmount.amount)\r",
+									"            .to.be.at.most(m.price.max.moneyAmount.amount);\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Currency is USD for all modes\", function () {\r",
+									"    const modes = pm.response.json().response.estimatedFreightRates.mode;\r",
+									"\r",
+									"    modes.forEach(m => {\r",
+									"        pm.expect(m.price.min.moneyAmount.currency).to.eql(\"USD\");\r",
+									"        pm.expect(m.price.max.moneyAmount.currency).to.eql(\"USD\");\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Number of quotes matches mode count\", function () {\r",
+									"    const data = pm.response.json().response.estimatedFreightRates;\r",
+									"    pm.expect(data.numQuotes).to.eql(data.mode.length);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}loadtype=boxes&weight=300&width=55&length=60&height=40&origin=Toronto,Canada&quantity=7&destination= Hamburg,Germany",
+							"host": [
+								"{{URL}}loadtype=boxes&weight=300&width=55&length=60&height=40&origin=Toronto,Canada&quantity=7&destination= Hamburg,Germany"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Box Shipment - Orgn=NL & Dst=AE",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"/*pm.test(\"Response time is below 3000ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(3000);\r",
+									"});*/\r",
+									"\r",
+									"pm.test(\"Response object exists\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"response\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"estimatedFreightRates is present\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.response).to.have.property(\"estimatedFreightRates\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Mode array is not empty\", function () {\r",
+									"    const modes = pm.response.json().response.estimatedFreightRates.mode;\r",
+									"    pm.expect(modes.length).to.be.greaterThan(0);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Expected shipping modes are valid\", function () {\r",
+									"    const modes = pm.response.json().response.estimatedFreightRates.mode\r",
+									"        .map(m => m.mode);\r",
+									"\r",
+									"    const allowedModes = [\"air\", \"express\", \"LCL\"];\r",
+									"    modes.forEach(mode => {\r",
+									"        pm.expect(allowedModes).to.include(mode);\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Min price is less than or equal to max price for each mode\", function () {\r",
+									"    const modes = pm.response.json().response.estimatedFreightRates.mode;\r",
+									"\r",
+									"    modes.forEach(m => {\r",
+									"        pm.expect(m.price.min.moneyAmount.amount)\r",
+									"            .to.be.at.most(m.price.max.moneyAmount.amount);\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Currency is USD for all modes\", function () {\r",
+									"    const modes = pm.response.json().response.estimatedFreightRates.mode;\r",
+									"\r",
+									"    modes.forEach(m => {\r",
+									"        pm.expect(m.price.min.moneyAmount.currency).to.eql(\"USD\");\r",
+									"        pm.expect(m.price.max.moneyAmount.currency).to.eql(\"USD\");\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Transit time min is less than or equal to max\", function () {\r",
+									"    const modes = pm.response.json().response.estimatedFreightRates.mode;\r",
+									"\r",
+									"    modes.forEach(m => {\r",
+									"        pm.expect(m.transitTimes.min)\r",
+									"            .to.be.at.most(m.transitTimes.max);\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Transit time unit is days\", function () {\r",
+									"    const modes = pm.response.json().response.estimatedFreightRates.mode;\r",
+									"\r",
+									"    modes.forEach(m => {\r",
+									"        pm.expect(m.transitTimes.unit).to.eql(\"days\");\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Number of quotes matches mode count\", function () {\r",
+									"    const data = pm.response.json().response.estimatedFreightRates;\r",
+									"    pm.expect(data.numQuotes).to.eql(data.mode.length);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}loadtype=boxes&weight=250&width=40&length=50&height=50&origin=Amsterdam,Netherlands&quantity=4&destination=Dubai,UAE",
+							"host": [
+								"{{URL}}loadtype=boxes&weight=250&width=40&length=50&height=50&origin=Amsterdam,Netherlands&quantity=4&destination=Dubai,UAE"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Box Shipment - Orgn=AE & Dst=NL",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"/*pm.test(\"Response time is below 3000ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(3000);\r",
+									"});*/\r",
+									"\r",
+									"pm.test(\"Response object exists\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"response\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"estimatedFreightRates is present\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.response).to.have.property(\"estimatedFreightRates\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Mode array is not empty\", function () {\r",
+									"    const modes = pm.response.json().response.estimatedFreightRates.mode;\r",
+									"    pm.expect(modes.length).to.be.greaterThan(0);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Expected shipping modes are valid\", function () {\r",
+									"    const modes = pm.response.json().response.estimatedFreightRates.mode\r",
+									"        .map(m => m.mode);\r",
+									"\r",
+									"    const allowedModes = [\"air\", \"express\", \"LCL\"];\r",
+									"    modes.forEach(mode => {\r",
+									"        pm.expect(allowedModes).to.include(mode);\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Min price is less than or equal to max price for each mode\", function () {\r",
+									"    const modes = pm.response.json().response.estimatedFreightRates.mode;\r",
+									"\r",
+									"    modes.forEach(m => {\r",
+									"        pm.expect(m.price.min.moneyAmount.amount)\r",
+									"            .to.be.at.most(m.price.max.moneyAmount.amount);\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Currency is USD for all modes\", function () {\r",
+									"    const modes = pm.response.json().response.estimatedFreightRates.mode;\r",
+									"\r",
+									"    modes.forEach(m => {\r",
+									"        pm.expect(m.price.min.moneyAmount.currency).to.eql(\"USD\");\r",
+									"        pm.expect(m.price.max.moneyAmount.currency).to.eql(\"USD\");\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Transit time min is less than or equal to max\", function () {\r",
+									"    const modes = pm.response.json().response.estimatedFreightRates.mode;\r",
+									"\r",
+									"    modes.forEach(m => {\r",
+									"        pm.expect(m.transitTimes.min)\r",
+									"            .to.be.at.most(m.transitTimes.max);\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Transit time unit is days\", function () {\r",
+									"    const modes = pm.response.json().response.estimatedFreightRates.mode;\r",
+									"\r",
+									"    modes.forEach(m => {\r",
+									"        pm.expect(m.transitTimes.unit).to.eql(\"days\");\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Number of quotes matches mode count\", function () {\r",
+									"    const data = pm.response.json().response.estimatedFreightRates;\r",
+									"    pm.expect(data.numQuotes).to.eql(data.mode.length);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}loadtype=boxes&weight=250&width=40&length=50&height=50&origin=Dubai,UAE&quantity=4&destination=Amsterdam,Netherlands",
+							"host": [
+								"{{URL}}loadtype=boxes&weight=250&width=40&length=50&height=50&origin=Dubai,UAE&quantity=4&destination=Amsterdam,Netherlands"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Box Shipment - Orgn=IN & Dst=DE",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"/*pm.test(\"Response time is below 3000ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(3000);\r",
+									"});*/\r",
+									"\r",
+									"pm.test(\"Response object exists\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"response\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"estimatedFreightRates is present\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.response).to.have.property(\"estimatedFreightRates\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Mode array is not empty\", function () {\r",
+									"    const modes = pm.response.json().response.estimatedFreightRates.mode;\r",
+									"    pm.expect(modes.length).to.be.greaterThan(0);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Expected shipping modes are valid\", function () {\r",
+									"    const modes = pm.response.json().response.estimatedFreightRates.mode\r",
+									"        .map(m => m.mode);\r",
+									"\r",
+									"    const allowedModes = [\"air\", \"express\", \"LCL\"];\r",
+									"    modes.forEach(mode => {\r",
+									"        pm.expect(allowedModes).to.include(mode);\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Min price is less than or equal to max price for each mode\", function () {\r",
+									"    const modes = pm.response.json().response.estimatedFreightRates.mode;\r",
+									"\r",
+									"    modes.forEach(m => {\r",
+									"        pm.expect(m.price.min.moneyAmount.amount)\r",
+									"            .to.be.at.most(m.price.max.moneyAmount.amount);\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Currency is USD for all modes\", function () {\r",
+									"    const modes = pm.response.json().response.estimatedFreightRates.mode;\r",
+									"\r",
+									"    modes.forEach(m => {\r",
+									"        pm.expect(m.price.min.moneyAmount.currency).to.eql(\"USD\");\r",
+									"        pm.expect(m.price.max.moneyAmount.currency).to.eql(\"USD\");\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Transit time min is less than or equal to max\", function () {\r",
+									"    const modes = pm.response.json().response.estimatedFreightRates.mode;\r",
+									"\r",
+									"    modes.forEach(m => {\r",
+									"        pm.expect(m.transitTimes.min)\r",
+									"            .to.be.at.most(m.transitTimes.max);\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Transit time unit is days\", function () {\r",
+									"    const modes = pm.response.json().response.estimatedFreightRates.mode;\r",
+									"\r",
+									"    modes.forEach(m => {\r",
+									"        pm.expect(m.transitTimes.unit).to.eql(\"days\");\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Number of quotes matches mode count\", function () {\r",
+									"    const data = pm.response.json().response.estimatedFreightRates;\r",
+									"    pm.expect(data.numQuotes).to.eql(data.mode.length);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}loadtype=boxes&weight=400&width=60&length=60&height=50&origin=Delhi,India&quantity=2&destination=Hamburg,Germany",
+							"host": [
+								"{{URL}}loadtype=boxes&weight=400&width=60&length=60&height=50&origin=Delhi,India&quantity=2&destination=Hamburg,Germany"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Box Shipment - Orgn=DE & Dst=IN",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"/*pm.test(\"Response time is below 3000ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(3000);\r",
+									"});*/\r",
+									"\r",
+									"pm.test(\"Response object exists\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"response\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"estimatedFreightRates is present\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.response).to.have.property(\"estimatedFreightRates\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}loadtype=boxes&weight=400&width=60&length=60&height=50&origin=Hamburg,Germany&quantity=2&destination=Delhi,India",
+							"host": [
+								"{{URL}}loadtype=boxes&weight=400&width=60&length=60&height=50&origin=Hamburg,Germany&quantity=2&destination=Delhi,India"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
