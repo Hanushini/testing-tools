@@ -19,8 +19,8 @@ pipeline {
                         podman run --rm ^
                           -v "%WORKSPACE%:/etc/newman" ^
                           newman-tests:${BUILD_ID} ^
-                          run ${POSTMAN_COLLECTION}.postman_collection.json ^
-                          -e ${ENVIRONMENT}.postman_environment.json ^
+                          run /etc/newman/${POSTMAN_COLLECTION}.postman_collection.json ^
+                          -e /etc/newman/${ENVIRONMENT}.postman_environment.json ^
                           -r cli,htmlextra ^
                           --reporter-htmlextra-export /etc/newman/report.html
                         """
@@ -30,6 +30,19 @@ pipeline {
                     }
                 }
             }
+        }
+    }
+
+    post {
+        always {
+            publishHTML([
+                reportName: 'Postman API Test Report',
+                reportDir: '.',
+                reportFiles: 'report.html',
+                keepAll: true,
+                alwaysLinkToLastBuild: true,
+                allowMissing: false
+            ])
         }
     }
 }
