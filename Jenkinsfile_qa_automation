@@ -10,13 +10,6 @@ pipeline {
 
     stages {
 
-        stage('Checkout') {
-            steps {
-                git branch: "${BRANCH}",
-                    url: 'https://github.com/Hanushini/testing-tools.git'
-            }
-        }
-
         stage('Run Postman Tests') {
             steps {
                 script {
