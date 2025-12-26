@@ -11,20 +11,22 @@ pipeline {
     stages {
 
         stage('Run Postman Tests') {
-    steps {
-        bat """
-        podman build -t newman-tests:${BUILD_ID} .
-        podman run --rm ^
-          -v "%WORKSPACE%:/etc/newman" ^
-          newman-tests:${BUILD_ID} ^
-          run /etc/newman/${POSTMAN_COLLECTION}.postman_collection.json ^
-          -e /etc/newman/postman/${ENVIRONMENT}.postman_environment.json ^
-          -r cli,htmlextra ^
-          --reporter-htmlextra-export /etc/newman/report.html
-        """
-                        }
+            steps {
+                script {
+                    try {
+                        bat """
+                        podman build -t newman-tests:${BUILD_ID} .
+                        podman run --rm ^
+                          -v "%WORKSPACE%:/etc/newman" ^
+                          newman-tests:${BUILD_ID} ^
+                          run /etc/newman/${POSTMAN_COLLECTION}.postman_collection.json ^
+                          -e /etc/newman/postman/${ENVIRONMENT}.postman_environment.json ^
+                          -r cli,htmlextra ^
+                          --reporter-htmlextra-export /etc/newman/report.html
+                        """
                     } catch (e) {
                         env.TEST_FAILED = 'true'
+                        throw e
                     }
                 }
             }
