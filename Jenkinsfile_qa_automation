@@ -17,9 +17,8 @@ pipeline {
 			bat """
 			podman build -t newman-tests:${BUILD_ID} .
 
-			podman run --rm -v "%WORKSPACE%:/etc/newman" newman-tests:${BUILD_ID} ^
-			newman run /etc/newman/${POSTMAN_COLLECTION}.postman_collection.json ^
-			-e /etc/newman/${ENVIRONMENT}.postman_environment.json ^
+			podman run ${POSTMAN_COLLECTION}.postman_collection.json ^
+			-e ${ENVIRONMENT}.postman_environment.json ^
 			-r cli,htmlextra ^
 			--reporter-htmlextra-title "API Automation Test Report" ^
 			--reporter-htmlextra-theme flatly ^
