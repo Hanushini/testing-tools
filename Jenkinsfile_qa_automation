@@ -15,11 +15,9 @@ pipeline {
                 script {
                     try {
 			bat """
-podman build -t newman-tests:${BUILD_ID} .
-
 podman run --rm ^
-  -v "%WORKSPACE%:/etc/newman" ^
-  newman-tests:${BUILD_ID} ^
+  -v "//c/Users/lhanu/.jenkins/workspace/API-Test-Automation:/etc/newman" ^
+  newman-tests:22 ^
   newman run /etc/newman/Freightos-Box-Shipment-Calculator-API.postman_collection.json ^
   -e /etc/newman/TEST.postman_environment.json ^
   -r cli,htmlextra ^
@@ -29,6 +27,7 @@ podman run --rm ^
   --reporter-htmlextra-showOnlyFails false ^
   --reporter-htmlextra-export /etc/newman/report.html
 """
+
 
                     } catch (e) {
                         env.TEST_FAILED = 'true'
